@@ -1,0 +1,49 @@
+Feature: Listar Usuarios - GET /usuarios
+
+  Background:
+    * url baseUrl
+
+  @smoke
+  Scenario: Obtener lista completa de usuarios
+    Given path '/usuarios'
+    When method GET
+    Then status 200
+    And match response == read('classpath:schemas/listaUsuarios.json')
+    And assert response.quantidade >= 0
+    And match response.usuarios == '#array'
+
+  Scenario: Cada usuario en la lista tiene la estructura correcta
+    Given path '/usuarios'
+    When method GET
+    Then status 200
+    And match each response.usuarios == read('classpath:schemas/usuario.json')
+
+  Scenario: Filtrar usuarios por nombre existente
+    Given path '/usuarios'
+    And param nome = 'Gelman Chavez'
+    When method GET
+    Then status 200
+    And assert response.quantidade >= 0
+
+  Scenario: Filtrar usuarios por email existente
+    Given path '/usuarios'
+    And param email = 'gelman@qa.com'
+    When method GET
+    Then status 200
+    And assert response.quantidade >= 0
+
+  # administrador también es filtro válido según swagger
+  Scenario: Filtrar usuarios por administrador
+    Given path '/usuarios'
+    And param administrador = 'true'
+    When method GET
+    Then status 200
+    And assert response.quantidade >= 0
+
+  Scenario: Filtrar por nombre inexistente retorna lista vacía
+    Given path '/usuarios'
+    And param nome = 'DragonBallZ999'
+    When method GET
+    Then status 200
+    And match response.quantidade == 0
+    And match response.usuarios == []
