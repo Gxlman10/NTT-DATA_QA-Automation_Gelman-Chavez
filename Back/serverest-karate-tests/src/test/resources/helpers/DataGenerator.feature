@@ -15,5 +15,5 @@ Feature: Generador de datos únicos
     * def adminFalse = 'false'
 
     # objetos listos para usar como body en los features
-    * def usuarioAdmin = { nome: '#(nome)', email: '#(email)', password: '#(password)', administrador: '#(adminTrue)' }
+    * def usuarioAdmin  = { nome: '#(nome)', email: '#(email)', password: '#(password)', administrador: '#(adminTrue)' }
     * def usuarioNormal = { nome: '#(nome)', email: '#(email)', password: '#(password)', administrador: '#(adminFalse)' }

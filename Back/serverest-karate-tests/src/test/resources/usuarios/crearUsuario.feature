@@ -4,7 +4,7 @@ Feature: Registrar Usuario - POST /usuarios
     * url baseUrl
     * call read('classpath:helpers/DataGenerator.feature')
 
-  @smoke
+  @smoke @positivo @regresion
   Scenario: Registrar usuario administrador con datos válidos
     Given path '/usuarios'
     And request usuarioAdmin
@@ -14,6 +14,7 @@ Feature: Registrar Usuario - POST /usuarios
     And match response.message == 'Cadastro realizado com sucesso'
     And match response._id == '#string'
 
+  @positivo @regresion
   Scenario: Registrar usuario no administrador con datos válidos
     Given path '/usuarios'
     And request usuarioNormal
@@ -22,6 +23,7 @@ Feature: Registrar Usuario - POST /usuarios
     And match response.message == 'Cadastro realizado com sucesso'
     And match response._id == '#string'
 
+  @negativo @regresion
   Scenario: No debe registrar usuario con email duplicado
     # primer registro
     Given path '/usuarios'
@@ -36,30 +38,17 @@ Feature: Registrar Usuario - POST /usuarios
     And match response == read('classpath:schemas/mensajeError.json')
     And match response.message == 'Este email já está sendo usado'
 
-  Scenario: No debe registrar usuario sin el campo nome
+  @negativo @regresion
+  Scenario Outline: No debe registrar usuario con campo <campo> inválido
     Given path '/usuarios'
-    And request { email: '#(email)', password: '#(password)', administrador: 'true' }
+    And request <body>
     When method POST
     Then status 400
-    And match response.nome == '#string'
+    And match response.<campo> == '#string'
 
-  Scenario: No debe registrar usuario sin el campo email
-    Given path '/usuarios'
-    And request { nome: '#(nome)', password: '#(password)', administrador: 'true' }
-    When method POST
-    Then status 400
-    And match response.email == '#string'
-
-  Scenario: No debe registrar usuario sin el campo password
-    Given path '/usuarios'
-    And request { nome: '#(nome)', email: '#(email)', administrador: 'true' }
-    When method POST
-    Then status 400
-    And match response.password == '#string'
-
-  Scenario: No debe registrar usuario con email en formato invalido
-    Given path '/usuarios'
-    And request { nome: '#(nome)', email: 'email-invalido-sin-arroba', password: '#(password)', administrador: 'true' }
-    When method POST
-    Then status 400
-    And match response.email == '#string'
+    Examples:
+      | campo      | body                                                                                  |
+      | nome       | { email: '#(email)', password: '#(password)', administrador: 'true' }                |
+      | email      | { nome: '#(nome)', password: '#(password)', administrador: 'true' }                  |
+      | password   | { nome: '#(nome)', email: '#(email)', administrador: 'true' }                        |
+      | email      | { nome: '#(nome)', email: 'email-invalido-sin-arroba', password: '#(password)', administrador: 'true' } |

@@ -19,9 +19,12 @@ cd serverest-karate-tests
 mvn test
 ```
 
-### Solo smoke (solo happy path por endpoint)
+### Por tag
 ```bash
-mvn test -Dkarate.options="--tags @smoke"
+mvn test -Dkarate.options="--tags @smoke"      # happy path por endpoint
+mvn test -Dkarate.options="--tags @negativo"   # solo casos de error
+mvn test -Dkarate.options="--tags @positivo"   # solo casos exitosos
+mvn test -Dkarate.options="--tags @regresion"  # suite completa de regresión
 ```
 
 ### Un feature específico

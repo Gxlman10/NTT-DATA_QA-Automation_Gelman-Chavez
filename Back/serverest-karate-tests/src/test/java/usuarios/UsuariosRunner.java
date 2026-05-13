@@ -6,19 +6,13 @@ import org.junit.jupiter.api.Tag;
 @Tag("usuarios")
 class UsuariosRunner {
 
-    // corre todos los features de la carpeta usuarios/
+    // mvn test                                         → todos los escenarios
+    // mvn test -Dkarate.options="--tags @smoke"        → happy path por endpoint
+    // mvn test -Dkarate.options="--tags @negativo"     → solo casos de error
+    // mvn test -Dkarate.options="--tags @regresion"    → suite completa
     @Karate.Test
     Karate testAll() {
         return Karate.run("classpath:usuarios").relativeTo(getClass());
-    }
-
-    // solo los @smoke, útil para correr rápido en cada commit
-    @Karate.Test
-    @Tag("smoke")
-    Karate testSmoke() {
-        return Karate.run("classpath:usuarios")
-                     .tags("@smoke")
-                     .relativeTo(getClass());
     }
 
 }

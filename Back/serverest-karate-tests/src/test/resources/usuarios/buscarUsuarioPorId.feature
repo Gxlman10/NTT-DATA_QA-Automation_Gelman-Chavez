@@ -10,7 +10,7 @@ Feature: Buscar Usuario por ID - GET /usuarios/{_id}
     Then status 201
     * def usuarioId = response._id
 
-  @smoke
+  @smoke @positivo @regresion
   Scenario: Buscar usuario existente por su ID
     Given path '/usuarios/' + usuarioId
     When method GET
@@ -19,6 +19,7 @@ Feature: Buscar Usuario por ID - GET /usuarios/{_id}
     And match response._id == usuarioId
     And match response.email == email
 
+  @positivo @regresion
   Scenario: Buscar usuario valida todos los campos del objeto
     Given path '/usuarios/' + usuarioId
     When method GET
@@ -29,6 +30,7 @@ Feature: Buscar Usuario por ID - GET /usuarios/{_id}
     And match response.administrador == '#string'
     And match response._id == '#string'
 
+  @negativo @regresion
   Scenario: No debe encontrar usuario con ID inexistente
     Given path '/usuarios/idinvalido000000'
     When method GET

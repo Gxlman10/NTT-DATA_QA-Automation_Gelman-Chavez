@@ -10,7 +10,7 @@ Feature: Actualizar Usuario - PUT /usuarios/{_id}
     Then status 201
     * def usuarioId = response._id
 
-  @smoke
+  @smoke @positivo @regresion
   Scenario: Actualizar todos los datos de un usuario existente
     * def timestamp2 = new Date().getTime() + 1
     * def nomeActualizado = 'Nombre Actualizado ' + timestamp2
@@ -24,6 +24,7 @@ Feature: Actualizar Usuario - PUT /usuarios/{_id}
     And match response.message == 'Registro alterado com sucesso'
 
   # ojo: si el id no existe, serverest hace upsert (crea el usuario) y retorna 201
+  @positivo @regresion
   Scenario: PUT con ID inexistente crea el usuario (comportamiento de upsert)
     * def timestamp2 = new Date().getTime() + 1
     * def nomeUpsert = 'Upsert User ' + timestamp2
@@ -36,6 +37,7 @@ Feature: Actualizar Usuario - PUT /usuarios/{_id}
     And match response.message == 'Cadastro realizado com sucesso'
     And match response._id == '#string'
 
+  @negativo @regresion
   Scenario: No debe actualizar usuario con email ya registrado por otro usuario
     # crear segundo usuario para tener un email en conflicto
     * def timestamp2 = new Date().getTime() + 999
