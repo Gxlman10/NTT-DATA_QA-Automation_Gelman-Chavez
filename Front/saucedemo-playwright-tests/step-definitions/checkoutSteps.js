@@ -37,7 +37,6 @@ Then('debe ver el producto {string} en el resumen', async function (expectedProd
 Then('el total debe contener {string}', async function (expectedPartialTotal) {
   const checkoutPage = new CheckoutPage(this.page);
   const actualTotal = await checkoutPage.getTotal();
-  // usamos includes porque el total tiene formato "Total: $32.39"
   assert.ok(actualTotal.includes(expectedPartialTotal),
     `Total esperado contener "${expectedPartialTotal}", recibido: "${actualTotal}"`
   );

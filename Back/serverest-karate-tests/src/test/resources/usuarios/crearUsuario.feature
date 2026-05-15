@@ -30,7 +30,7 @@ Feature: Registrar Usuario - POST /usuarios
     And request usuarioAdmin
     When method POST
     Then status 201
-    # segundo intento con el mismo email, debe fallar
+    # segundo intento
     Given path '/usuarios'
     And request usuarioAdmin
     When method POST

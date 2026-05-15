@@ -2,7 +2,6 @@ Feature: Buscar Usuario por ID - GET /usuarios/{_id}
 
   Background:
     * url baseUrl
-    # crea un usuario fresco y guarda su id para cada test
     * call read('classpath:helpers/DataGenerator.feature')
     Given path '/usuarios'
     And request usuarioAdmin

@@ -2,7 +2,6 @@ Feature: Actualizar Usuario - PUT /usuarios/{_id}
 
   Background:
     * url baseUrl
-    # crea un usuario nuevo antes de cada escenario y guarda su _id
     * call read('classpath:helpers/DataGenerator.feature')
     Given path '/usuarios'
     And request usuarioAdmin
@@ -23,7 +22,6 @@ Feature: Actualizar Usuario - PUT /usuarios/{_id}
     Then status 200
     And match response.message == 'Registro alterado com sucesso'
 
-  # ojo: si el id no existe, serverest hace upsert (crea el usuario) y retorna 201
   @positivo @regresion
   Scenario: PUT con ID inexistente crea el usuario (comportamiento de upsert)
     * def timestamp2 = new Date().getTime() + 1
@@ -39,7 +37,7 @@ Feature: Actualizar Usuario - PUT /usuarios/{_id}
 
   @negativo @regresion
   Scenario: No debe actualizar usuario con email ya registrado por otro usuario
-    # crear segundo usuario para tener un email en conflicto
+    # crear segundo usuario 
     * def timestamp2 = new Date().getTime() + 999
     * def emailOtroUsuario = 'otro_' + timestamp2 + '@qatest.com'
     * def otroUsuario = { nome: 'Otro User', email: '#(emailOtroUsuario)', password: 'Senha123', administrador: 'false' }
@@ -47,7 +45,7 @@ Feature: Actualizar Usuario - PUT /usuarios/{_id}
     And request otroUsuario
     When method POST
     Then status 201
-    # intentar pisar el email del segundo con el primer usuario
+    # fuerza registro
     Given path '/usuarios/' + usuarioId
     And request { nome: '#(nome)', email: '#(emailOtroUsuario)', password: '#(password)', administrador: 'true' }
     When method PUT

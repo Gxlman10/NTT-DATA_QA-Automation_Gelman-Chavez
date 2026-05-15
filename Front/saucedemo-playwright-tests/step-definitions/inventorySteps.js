@@ -2,13 +2,11 @@ const { When, Then, Given } = require('@cucumber/cucumber');
 const assert = require('assert');
 const InventoryPage = require('../pages/InventoryPage');
 
-// step compartido: usado también en cart y checkout como Background
 Given('agregó {string} al carrito', async function (productName) {
   const inventoryPage = new InventoryPage(this.page);
   await inventoryPage.addProductToCart(productName);
 });
 
-// step compartido: usado en checkout Background
 Given('navegó al carrito', async function () {
   const inventoryPage = new InventoryPage(this.page);
   await inventoryPage.goToCart();
@@ -26,7 +24,6 @@ Then('el contador del carrito debe mostrar {string}', async function (expectedCo
 });
 
 Then('el botón de {string} debe decir {string}', async function (productName, expectedText) {
-  // el botón remove sigue el mismo patrón de slug que add-to-cart
   const slug = productName.toLowerCase().replace(/ /g, '-');
   const removeSelector = `[data-test="remove-${slug}"]`;
   const buttonText = await this.page.locator(removeSelector).innerText();

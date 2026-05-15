@@ -5,7 +5,7 @@ const InventoryPage = require('../pages/InventoryPage');
 
 When('navega al carrito', async function () {
   const inventoryPage = new InventoryPage(this.page);
-  await inventoryPage.goToCart(); // hace clic en el ícono del carrito y espera el URL
+  await inventoryPage.goToCart();
 });
 
 Then('debe ver {string} en el carrito', async function (expectedProductName) {
