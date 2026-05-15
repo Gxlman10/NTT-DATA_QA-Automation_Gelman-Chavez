@@ -21,9 +21,9 @@ mvn test
 
 ### Por tag
 ```bash
-mvn test -Dkarate.options="--tags @smoke"      # happy path por endpoint
-mvn test -Dkarate.options="--tags @negativo"   # solo casos de error
-mvn test -Dkarate.options="--tags @positivo"   # solo casos exitosos
+mvn test -Dkarate.options="--tags @smoke"      # happy path
+mvn test -Dkarate.options="--tags @negativo"   # solo error
+mvn test -Dkarate.options="--tags @positivo"   # solo exitosos
 mvn test -Dkarate.options="--tags @regresion"  # suite completa de regresión
 ```
 
